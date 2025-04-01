@@ -340,7 +340,6 @@ document.addEventListener("DOMContentLoaded", () => {
             mandelbrot.center[1] = mandelbrot.yMin + relY * l
             mandelbrot.xMin = (mandelbrot.center[0] - l/2)
             mandelbrot.yMin = (mandelbrot.center[1] - l/2)
-            mandelbrot.center = [relX, relY]
             mandelbrot.update()
         }
     })
