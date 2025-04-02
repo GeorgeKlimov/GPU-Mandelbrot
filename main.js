@@ -339,12 +339,16 @@ document.addEventListener("DOMContentLoaded", () => {
             mandelbrot.resetTextures()
             let relX = (e.offsetX + 1) / 600
             let relY = 1 - (e.offsetY + 1) / 600
-            mandelbrot.l /= 0.9
             let l = mandelbrot.l
-            mandelbrot.center[0] = mandelbrot.xMin + relX * l
-            mandelbrot.center[1] = mandelbrot.yMin + relY * l
-            mandelbrot.xMin = (mandelbrot.center[0] - l/2)
-            mandelbrot.yMin = (mandelbrot.center[1] - l/2)
+            let x = mandelbrot.xMin + relX * l
+            let y = mandelbrot.yMin + relY * l
+            mandelbrot.xMin -= (x - mandelbrot.xMin) * 0.1
+            mandelbrot.yMin -= (y - mandelbrot.yMin) * 0.1
+            mandelbrot.xMax += (mandelbrot.xMax - x) * 0.1
+            mandelbrot.yMax += (mandelbrot.yMax - y) * 0.1
+            mandelbrot.center[0] = (mandelbrot.xMin + mandelbrot.xMax) / 2
+            mandelbrot.center[1] = (mandelbrot.yMin + mandelbrot.yMax) / 2
+            mandelbrot.l = mandelbrot.xMax - mandelbrot.xMin
             mandelbrot.update()
         }
     })
