@@ -200,6 +200,8 @@ class phys419{
         this.center = [0.0, 0.0]
         this.xMin = -2.0
         this.yMin = -2.0
+        this.xMax = 2.0
+        this.yMax = 2.0
         this.l = 4.0
 
         this.setupBuffers()
@@ -318,15 +320,18 @@ document.addEventListener("DOMContentLoaded", () => {
     canvas.addEventListener("mousedown", (e) => {
         if (e.button == 0){
             mandelbrot.resetTextures()
-            mandelbrot.l *= 0.9
             let relX = (e.offsetX + 1) / 600
             let relY = 1 - (e.offsetY + 1) / 600
             let l = mandelbrot.l
-            mandelbrot.center[0] = mandelbrot.xMin + relX * l
-            mandelbrot.center[1] = mandelbrot.yMin + relY * l
-            mandelbrot.xMin = (mandelbrot.center[0] - l/2)
-            mandelbrot.yMin = (mandelbrot.center[1] - l/2)
-            console.log(mandelbrot.center, [mandelbrot.xMin, mandelbrot.xMax], [mandelbrot.yMin, mandelbrot.yMax])
+            let x = mandelbrot.xMin + relX * l
+            let y = mandelbrot.yMin + relY * l
+            mandelbrot.xMin += (x - mandelbrot.xMin) * 0.1
+            mandelbrot.yMin += (y - mandelbrot.yMin) * 0.1
+            mandelbrot.xMax -= (mandelbrot.xMax - x) * 0.1
+            mandelbrot.yMax -= (mandelbrot.yMax - y) * 0.1
+            mandelbrot.center[0] = (mandelbrot.xMin + mandelbrot.xMax) / 2
+            mandelbrot.center[1] = (mandelbrot.yMin + mandelbrot.yMax) / 2
+            mandelbrot.l = mandelbrot.xMax - mandelbrot.xMin
             mandelbrot.update()
         }
         else if (e.button == 2){
@@ -334,13 +339,16 @@ document.addEventListener("DOMContentLoaded", () => {
             mandelbrot.resetTextures()
             let relX = (e.offsetX + 1) / 600
             let relY = 1 - (e.offsetY + 1) / 600
-            mandelbrot.l /= 0.9
             let l = mandelbrot.l
-            mandelbrot.center[0] = mandelbrot.xMin + relX * l
-            mandelbrot.center[1] = mandelbrot.yMin + relY * l
-            mandelbrot.xMin = (mandelbrot.center[0] - l/2)
-            mandelbrot.yMin = (mandelbrot.center[1] - l/2)
-            mandelbrot.center = [relX, relY]
+            let x = mandelbrot.xMin + relX * l
+            let y = mandelbrot.yMin + relY * l
+            mandelbrot.xMin -= (x - mandelbrot.xMin) * 0.1
+            mandelbrot.yMin -= (y - mandelbrot.yMin) * 0.1
+            mandelbrot.xMax += (mandelbrot.xMax - x) * 0.1
+            mandelbrot.yMax += (mandelbrot.yMax - y) * 0.1
+            mandelbrot.center[0] = (mandelbrot.xMin + mandelbrot.xMax) / 2
+            mandelbrot.center[1] = (mandelbrot.yMin + mandelbrot.yMax) / 2
+            mandelbrot.l = mandelbrot.xMax - mandelbrot.xMin
             mandelbrot.update()
         }
     })
